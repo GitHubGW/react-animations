@@ -1,6 +1,7 @@
 import styled from "styled-components";
-import Animation from "./components/Animation";
 import GlobalStyle from "./GlobalStyle";
+import Animation from "./components/Animation";
+import Variants from "./components/Variants";
 
 const Wrapper = styled.div`
   display: flex;
@@ -13,7 +14,8 @@ const App = () => {
   return (
     <Wrapper>
       <GlobalStyle />
-      <Animation />
+      {/* <Animation /> */}
+      <Variants />
     </Wrapper>
   );
 };
