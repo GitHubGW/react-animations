@@ -5,6 +5,13 @@ import Variants from "./components/Variants";
 import Gestures from "./components/Gestures";
 import Drag from "./components/Drag";
 import DragConstraints from "./components/DragConstraints";
+import MotionValues from "./components/MotionValues";
+import Scroll from "./components/Scroll";
+import Path from "./components/Path";
+import Modal from "./components/Modal";
+import Slider from "./components/Slider";
+import AnimateSharedLayout from "./components/AnimateSharedLayout";
+import AnimateSharedModal from "./components/AnimateSharedModal";
 
 const Wrapper = styled.div`
   display: flex;
@@ -21,7 +28,14 @@ const App = () => {
       {/* <Variants /> */}
       {/* <Gestures /> */}
       {/* <Drag /> */}
-      <DragConstraints />
+      {/* <DragConstraints /> */}
+      {/* <MotionValues /> */}
+      {/* <Scroll /> */}
+      {/* <Path /> */}
+      {/* <Modal /> */}
+      {/* <Slider /> */}
+      {/* <AnimateSharedLayout /> */}
+      <AnimateSharedModal />
     </Wrapper>
   );
 };
