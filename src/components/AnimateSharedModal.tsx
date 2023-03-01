@@ -1,12 +1,35 @@
-import { AnimatePresence, motion, Variants } from "framer-motion";
-import { useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
+import { useMemo, useState } from "react";
 import styled from "styled-components";
 
-const overlayVariants: Variants = {
-  start: { backgroundColor: "rgba(0,0,0,0)" },
-  end: { backgroundColor: "rgba(0,0,0,0.6)", transition: { duration: 0.5 } },
-  exit: { backgroundColor: "rgba(0,0,0,0)", transition: { duration: 0.5 } },
+const AnimateSharedModal = () => {
+  const [boxIndex, setBoxIndex] = useState<number | null>(null);
+  const overlayVariants = useMemo(
+    () => ({
+      start: { backgroundColor: "rgba(0,0,0,0)" },
+      end: { backgroundColor: "rgba(0,0,0,0.6)", transition: { duration: 0.5 } },
+      exit: { backgroundColor: "rgba(0,0,0,0)", transition: { duration: 0.5 } },
+    }),
+    []
+  );
+
+  return (
+    <Container>
+      {[1, 2, 3, 4].map((value) => (
+        <Box key={value} onClick={() => setBoxIndex(value)} layoutId={String(value)}></Box>
+      ))}
+      <AnimatePresence>
+        {boxIndex && (
+          <Overlay onClick={() => setBoxIndex(null)} variants={overlayVariants} initial="start" animate="end" exit="exit">
+            <ModalBox layoutId={String(boxIndex)}></ModalBox>
+          </Overlay>
+        )}
+      </AnimatePresence>
+    </Container>
+  );
 };
+
+export default AnimateSharedModal;
 
 const Container = styled.div`
   width: 800px;
@@ -46,24 +69,3 @@ const Overlay = styled(motion.div)`
   justify-content: center;
   align-items: center;
 `;
-
-const AnimateSharedModal = () => {
-  const [boxIndex, setBoxIndex] = useState<number | null>(null);
-
-  return (
-    <Container>
-      {[1, 2, 3, 4].map((index: number) => (
-        <Box onClick={() => setBoxIndex(index)} key={index} layoutId={String(index)}></Box>
-      ))}
-      <AnimatePresence>
-        {boxIndex && (
-          <Overlay onClick={() => setBoxIndex(null)} variants={overlayVariants} initial="start" animate="end" exit="exit">
-            <ModalBox layoutId={String(boxIndex)}></ModalBox>
-          </Overlay>
-        )}
-      </AnimatePresence>
-    </Container>
-  );
-};
-
-export default AnimateSharedModal;

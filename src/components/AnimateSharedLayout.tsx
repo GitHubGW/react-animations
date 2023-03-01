@@ -1,6 +1,18 @@
 import { motion } from "framer-motion";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import styled from "styled-components";
+
+const AnimateSharedLayout = () => {
+  const [isClicked, setIsClicked] = useState(false);
+
+  const handleCircleClick = useCallback(() => {
+    setIsClicked((prev) => !prev);
+  }, []);
+
+  return <Container onClick={handleCircleClick}>{isClicked ? <FirstCircle layoutId="circle" /> : <SecondCircle layoutId="circle" />}</Container>;
+};
+
+export default AnimateSharedLayout;
 
 const Container = styled.div`
   width: 400px;
@@ -29,16 +41,3 @@ const SecondCircle = styled(motion.div)`
   border-radius: 100px;
   cursor: pointer;
 `;
-
-const AnimateSharedLayout = () => {
-  const [isClicked, setIsClicked] = useState<boolean>(false);
-
-  return (
-    <>
-      <Container onClick={() => setIsClicked((isClicked) => !isClicked)}>{isClicked === true && <FirstCircle layoutId="circle"></FirstCircle>}</Container>
-      <Container onClick={() => setIsClicked((isClicked) => !isClicked)}>{isClicked === false && <SecondCircle layoutId="circle"></SecondCircle>}</Container>
-    </>
-  );
-};
-
-export default AnimateSharedLayout;

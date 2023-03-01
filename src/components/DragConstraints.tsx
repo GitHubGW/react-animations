@@ -1,10 +1,25 @@
 import { motion } from "framer-motion";
-import { useRef } from "react";
+import { useMemo, useRef } from "react";
 import styled from "styled-components";
 
-const boxVariants = {
-  whileDrag: { borderRadius: "50%", backgroundColor: "rgba(253, 203, 110,1.0)", transition: { duration: 0.5 } },
+const DragConstraints = () => {
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  const boxVariants = useMemo(
+    () => ({
+      whileDrag: { borderRadius: "50%", backgroundColor: "rgba(253, 203, 110,1.0)", transition: { duration: 0.5 } },
+    }),
+    []
+  );
+
+  return (
+    <Container ref={containerRef}>
+      <Box drag variants={boxVariants} whileDrag="whileDrag" dragConstraints={containerRef} dragSnapToOrigin={true} dragElastic={0.5} />
+    </Container>
+  );
 };
+
+export default DragConstraints;
 
 const Container = styled.div`
   width: 400px;
@@ -26,15 +41,3 @@ const Box = styled(motion.div)`
   cursor: pointer;
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 `;
-
-const DragConstraints = () => {
-  const containerRef = useRef<HTMLDivElement>(null);
-
-  return (
-    <Container ref={containerRef}>
-      <Box drag variants={boxVariants} whileDrag="whileDrag" dragConstraints={containerRef} dragSnapToOrigin={true} dragElastic={0.5} />
-    </Container>
-  );
-};
-
-export default DragConstraints;

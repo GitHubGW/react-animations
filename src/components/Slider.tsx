@@ -1,16 +1,46 @@
-import { AnimatePresence, motion, Variants } from "framer-motion";
-import { useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
+import { useCallback, useMemo, useState } from "react";
 import styled from "styled-components";
 
-const slideVariants: Variants = {
-  start: (custom: string) => {
-    return { x: custom === "next" ? 200 : -200, opacity: 0 };
-  },
-  end: { x: 0, opacity: 1, transition: { duration: 0.5 } },
-  exit: (custom: string) => {
-    return { x: custom === "next" ? -200 : 200, opacity: 0, transition: { duration: 0.5 } };
-  },
+const Slider = () => {
+  const [state, setState] = useState("next");
+  const [visible, setVisible] = useState(1);
+
+  const slideVariants = useMemo(
+    () => ({
+      start: (custom: string) => ({ x: custom === "next" ? 200 : -200, opacity: 0 }),
+      end: { x: 0, opacity: 1, transition: { duration: 0.5 } },
+      exit: (custom: string) => ({ x: custom === "next" ? -200 : 200, opacity: 0, transition: { duration: 0.5 } }),
+    }),
+    []
+  );
+
+  const handleShowPrevItem = useCallback(() => {
+    setState("prev");
+    setVisible((prev) => (prev === 1 ? 10 : prev - 1));
+  }, []);
+
+  const handleShowNextItem = useCallback(() => {
+    setState("next");
+    setVisible((prev) => (prev === 10 ? 1 : prev + 1));
+  }, []);
+
+  return (
+    <Container>
+      <AnimatePresence custom={state} exitBeforeEnter={true}>
+        <Box key={visible} custom={state} variants={slideVariants} initial="start" animate="end" exit="exit">
+          {visible}
+        </Box>
+      </AnimatePresence>
+      <Buttons>
+        <button onClick={handleShowPrevItem}>Prev</button>
+        <button onClick={handleShowNextItem}>Next</button>
+      </Buttons>
+    </Container>
+  );
 };
+
+export default Slider;
 
 const Container = styled.div`
   text-align: center;
@@ -39,57 +69,17 @@ const Buttons = styled.div`
   bottom: 30%;
   left: 50%;
   transform: translate(-50%, -50%);
+
   button {
     border: none;
     outline: none;
     font-size: 16px;
-    cursor: pointer;
     padding: 10px 20px;
     background-color: dodgerblue;
     color: white;
     border-radius: 30px;
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
     margin: 0 5px;
+    cursor: pointer;
   }
 `;
-
-const Slider = () => {
-  const [visible, setVisible] = useState<number>(1);
-  const [state, setState] = useState<string>("next");
-
-  const handleShowPrevItem = (): void => {
-    setState("prev");
-    setVisible((visible: number) => {
-      if (visible === 1) {
-        return 10;
-      }
-      return visible - 1;
-    });
-  };
-
-  const handleShowNextItem = (): void => {
-    setState("next");
-    setVisible((visible: number) => {
-      if (visible === 10) {
-        return 1;
-      }
-      return visible + 1;
-    });
-  };
-
-  return (
-    <Container>
-      <AnimatePresence custom={state} exitBeforeEnter={true}>
-        <Box key={visible} custom={state} variants={slideVariants} initial="start" animate="end" exit="exit">
-          {visible}
-        </Box>
-      </AnimatePresence>
-      <Buttons>
-        <button onClick={handleShowPrevItem}>Prev</button>
-        <button onClick={handleShowNextItem}>Next</button>
-      </Buttons>
-    </Container>
-  );
-};
-
-export default Slider;

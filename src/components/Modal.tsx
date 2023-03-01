@@ -1,12 +1,36 @@
-import { AnimatePresence, motion, Variants } from "framer-motion";
-import { useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
+import { useCallback, useMemo, useState } from "react";
 import styled from "styled-components";
 
-const modalBoxVariants: Variants = {
-  start: { opacity: 0, scale: 0.95 },
-  end: { opacity: 1, scale: 1, transition: { duration: 0.5 } },
-  exit: { opacity: 0, scale: 0.95, transition: { duration: 0.5 } },
+const Modal = () => {
+  const [isModal, setIsModal] = useState(false);
+
+  const modalBoxVariants = useMemo(
+    () => ({
+      start: { opacity: 0, scale: 0.95 },
+      end: { opacity: 1, scale: 1, transition: { duration: 0.5 } },
+      exit: { opacity: 0, scale: 0.95, transition: { duration: 0.5 } },
+    }),
+    []
+  );
+
+  const handleToggleModal = useCallback(() => {
+    setIsModal((isModal) => !isModal);
+  }, []);
+
+  return (
+    <Container>
+      {isModal && (
+        <AnimatePresence>
+          <ModalBox variants={modalBoxVariants} initial="start" animate="end" exit="exit" />
+        </AnimatePresence>
+      )}
+      <Button onClick={handleToggleModal}>{isModal ? "Hide" : "Show"}</Button>
+    </Container>
+  );
 };
+
+export default Modal;
 
 const Container = styled.div`
   text-align: center;
@@ -34,20 +58,3 @@ const Button = styled.button`
   border-radius: 30px;
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 `;
-
-const Modal = () => {
-  const [isModal, setIsModal] = useState<boolean>(false);
-
-  const handleToggleModal = () => {
-    setIsModal((isModal: boolean) => !isModal);
-  };
-
-  return (
-    <Container>
-      <AnimatePresence>{isModal === true && <ModalBox variants={modalBoxVariants} initial="start" animate="end" exit="exit" />}</AnimatePresence>
-      <Button onClick={handleToggleModal}>{isModal === true ? "Hide" : "Show"}</Button>
-    </Container>
-  );
-};
-
-export default Modal;

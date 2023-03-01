@@ -13,16 +13,9 @@ import Slider from "./components/Slider";
 import AnimateSharedLayout from "./components/AnimateSharedLayout";
 import AnimateSharedModal from "./components/AnimateSharedModal";
 
-const Wrapper = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-`;
-
 const App = () => {
   return (
-    <Wrapper>
+    <Container>
       <GlobalStyle />
       {/* <Animation /> */}
       {/* <Variants /> */}
@@ -36,8 +29,15 @@ const App = () => {
       {/* <Slider /> */}
       {/* <AnimateSharedLayout /> */}
       <AnimateSharedModal />
-    </Wrapper>
+    </Container>
   );
 };
 
 export default App;
+
+const Container = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+`;

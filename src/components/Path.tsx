@@ -1,18 +1,15 @@
-import { motion, Variants } from "framer-motion";
-
-const pathVariants: Variants = {
-  start: {
-    fill: "rgba(255,255,255,0.1)",
-    pathLength: 0,
-  },
-  end: {
-    fill: "rgba(255,255,255,1)",
-    pathLength: 1,
-    transition: { fill: { duration: 2, delay: 2 }, pathLength: { duration: 3 } },
-  },
-};
+import { motion } from "framer-motion";
+import { useMemo } from "react";
 
 const Path = () => {
+  const pathVariants = useMemo(
+    () => ({
+      start: { fill: "rgba(255,255,255,0.1)", pathLength: 0 },
+      end: { fill: "rgba(255,255,255,1)", pathLength: 1, transition: { fill: { duration: 2, delay: 2 }, pathLength: { duration: 3 } } },
+    }),
+    []
+  );
+
   return (
     <svg style={{ width: "400px" }} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
       <motion.path
